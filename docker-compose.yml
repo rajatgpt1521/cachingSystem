@@ -1,0 +1,32 @@
+version: '2'
+services:
+  redis:
+    hostname: redis
+    image: redis:4.0.9-alpine
+    command: redis-server
+    volumes:
+      - /opt/soroco/service/redis:/data
+    ports:
+      - 6379:6379
+
+  postgres:
+    container_name: 'postgres'
+    image: 'postgres:9.5.3'
+    environment:
+      - POSTGRES_USER:'postgres'
+      - POSTGRES_PASSWORD:'rajat'
+      - POSTGRES_DB:'caching'
+    ports:
+      - '10000:5432'
+    volumes:
+      - '/opt/soroco/test/init.sql:/docker-entrypoint-initdb.d/init.sql'
+      - '/opt/soroco/pgdata:/var/lib/postgresql/data/'
+
+  caching:
+    image: cachingsystem
+    volumes:
+      - /opt/soroco/:/opt/soroco/
+    network_mode: "host"
+    depends_on:
+      - redis
+      - postgres
