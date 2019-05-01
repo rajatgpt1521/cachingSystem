@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"github.com/gorilla/mux"
 	"github.com/rajatgpt1521/cachingSystem/service/models"
 	"github.com/rajatgpt1521/cachingSystem/service/pkg/cache_handler"
 	"github.com/rajatgpt1521/cachingSystem/service/pkg/database"
@@ -14,19 +16,19 @@ import (
 func TestReadCacheHandler(t *testing.T) {
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	cache_handler.InitializeTestDB()
-	//models.AutoMigrateSQL()
-	//cache_handler.InitializeTest()
-	req, err := http.NewRequest("GET", "/view/page/0", nil)
+	path := fmt.Sprintf("/view/page/%s", "123")
+	req, err := http.NewRequest("GET", path, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	// We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(server.ReadCachePagination)
+	router := mux.NewRouter()
+	router.HandleFunc("/view/page/{pageno}", server.ReadCachePagination)
 
 	// Our handlers satisfy http.Handler, so we can call their ServeHTTP method
 	// directly and pass in our Request and ResponseRecorder.
-	handler.ServeHTTP(rr, req)
+	router.ServeHTTP(rr, req)
 
 	// Check the status code is what we expect.
 	if status := rr.Code; status != http.StatusOK {
@@ -47,17 +49,19 @@ func TestPutCacheHandler(t *testing.T) {
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	cache_handler.InitializeTestDB()
 
-	req, err := http.NewRequest("PUT", "/insert/page", nil)
+	path := fmt.Sprintf("/insert/%s", "123")
+	req, err := http.NewRequest("PUT", path, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	// We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(server.PutData)
+	router := mux.NewRouter()
+	router.HandleFunc("/insert/{data}", server.PutData)
 
 	// Our handlers satisfy http.Handler, so we can call their ServeHTTP method
 	// directly and pass in our Request and ResponseRecorder.
-	handler.ServeHTTP(rr, req)
+	router.ServeHTTP(rr, req)
 
 	// Check the status code is what we expect.
 	if status := rr.Code; status != http.StatusOK {
@@ -75,19 +79,19 @@ func TestPutCacheHandler(t *testing.T) {
 }
 func TestReloadHandler(t *testing.T) {
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
-
-	req, err := http.NewRequest("PUT", "/notify/reload", nil)
+	path := fmt.Sprintf("/notify/%s", "reload")
+	req, err := http.NewRequest("PUT", path, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	// We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(server.Reload)
+	router := mux.NewRouter()
+	router.HandleFunc("/notify/{msg}", server.Reload)
 
 	// Our handlers satisfy http.Handler, so we can call their ServeHTTP method
 	// directly and pass in our Request and ResponseRecorder.
-	handler.ServeHTTP(rr, req)
-
+	router.ServeHTTP(rr, req)
 	// Check the status code is what we expect.
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",

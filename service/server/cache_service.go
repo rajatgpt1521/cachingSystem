@@ -64,7 +64,7 @@ func ReadCachePagination(w http.ResponseWriter, r *http.Request) {
 
 		w.WriteHeader(http.StatusNotFound)
 	}
-	i1, err := strconv.Atoi(skip["limit"])
+	i1, err := strconv.Atoi(skip["pageno"])
 	cache = paginate(cache, i1, PAGESIZE)
 	for _, data := range cache {
 		cache_data.Data = append(cache_data.Data, data)

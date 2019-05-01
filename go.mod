@@ -20,6 +20,7 @@ require (
 	github.com/go-openapi/validate v0.19.0 // indirect
 	github.com/go-redis/redis v6.15.2+incompatible // indirect
 	github.com/go-swagger/go-swagger v0.19.0 // indirect
+	github.com/gorilla/context v1.1.1
 	github.com/gorilla/handlers v1.4.0 // indirect
 	github.com/gorilla/mux v1.7.1
 	github.com/jessevdk/go-flags v1.4.0 // indirect
@@ -28,7 +29,7 @@ require (
 	github.com/rs/zerolog v1.14.3
 	github.com/spf13/viper v1.3.2 // indirect
 	github.com/swaggo/files v0.0.0-20190110041405-30649e0721f8 // indirect
-	github.com/swaggo/http-swagger v0.0.0-20190324132102-654001218d89 // indirect
+	github.com/swaggo/http-swagger v0.0.0-20190324132102-654001218d89
 	github.com/swaggo/swag v1.5.0
 	github.com/toqueteos/webbrowser v1.1.0 // indirect
 	gopkg.in/bsm/ratelimit.v1 v1.0.0-20160220154919-db14e161995a // indirect
