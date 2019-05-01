@@ -1,21 +1,23 @@
+
 package main
 
 import (
+	"context"
+	"flag"
+	"github.com/gorilla/mux"
 	"github.com/rajatgpt1521/cachingSystem/service/models"
 	"github.com/rajatgpt1521/cachingSystem/service/pkg/cache_handler"
 	"github.com/rajatgpt1521/cachingSystem/service/pkg/database"
 	server2 "github.com/rajatgpt1521/cachingSystem/service/server"
-	"context"
-	"flag"
-	"github.com/gorilla/mux"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"io"
+	"github.com/swaggo/http-swagger"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+	_ "github.com/rajatgpt1521/cachingSystem/docs"
 )
 
 func init() {
@@ -25,6 +27,7 @@ func init() {
 	cache_handler.Initialize()
 
 }
+
 func main() {
 
 	log.Info().Msg("Start Cache")
@@ -40,10 +43,11 @@ func main() {
 		ReadTimeout:  15 * time.Second,
 		IdleTimeout:  time.Second * 60,
 	}
-	r.HandleFunc("/", Routes).Methods("GET")
-	r.HandleFunc("/view/page/{limit}", server2.ReadCachePagination).Methods("GET")
+
+	r.HandleFunc("/view/page/{pageno}", server2.ReadCachePagination).Methods("GET")
 	r.HandleFunc("/insert/{data}", server2.PutData).Methods("PUT")
 	r.HandleFunc("/notify/{msg}", server2.Reload).Methods("PUT")
+	r.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
 	c := make(chan os.Signal, 1)
 	// We'll accept graceful shutdowns when quit via SIGINT (Ctrl+C)
@@ -75,8 +79,3 @@ func main() {
 
 }
 
-func Routes(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	io.WriteString(w, `{"Put" : "/insert/{data}","Read" : "/view/page/{pageid}"}`)
-}

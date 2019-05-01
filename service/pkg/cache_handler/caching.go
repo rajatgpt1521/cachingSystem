@@ -91,8 +91,6 @@ func (c *cache) ReadAll() (error, []string) {
 }
 
 func (c *cache) addInCache(n *Node) {
-	//Todo remove print
-	fmt.Printf("add: %s\n", n.Val)
 	tmp := c.Queue.Head.Right
 	c.Queue.Head.Right = n
 	n.Left = c.Queue.Head
@@ -108,8 +106,6 @@ func (c *cache) addInCache(n *Node) {
 
 func (c *cache) remove(n *Node) *Node {
 
-	//Todo remove print
-	fmt.Printf("remove: %s\n", n.Val)
 	left := n.Left
 	right := n.Right
 	left.Right = right
