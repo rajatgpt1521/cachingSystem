@@ -17,6 +17,7 @@ var doc = `{
     "paths": {
 			  "/view/page/{pageno}":{
 				"get": {
+				"tags": ["CachingApiExplorer"],
 				"parameters":[{
 								"name": "pageno",
 								"in": "path",
@@ -41,6 +42,7 @@ var doc = `{
 		},
 			  "/insert/{data}":{
                 "put":{
+				"tags": ["CachingApiExplorer"],
 				"parameters":[{
 								"name": "data",
 								"in": "path",
@@ -64,6 +66,7 @@ var doc = `{
 		},
 				"/notify/{msg}":{
                 "put":{
+				"tags": ["CachingApiExplorer"],
 				"parameters":[{
 								"name": "msg",
 								"in": "path",

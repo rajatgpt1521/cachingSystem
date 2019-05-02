@@ -18,6 +18,7 @@ type putResponse struct {
 
 var PAGESIZE = 2
 
+//Api to add data in cache
 func PutData(w http.ResponseWriter, r *http.Request) {
 	data := mux.Vars(r)
 
@@ -39,6 +40,7 @@ func PutData(w http.ResponseWriter, r *http.Request) {
 	w.Write(js)
 }
 
+//Api to send reload msg to RabbitMQ message queue
 func Reload(w http.ResponseWriter, r *http.Request) {
 	data := mux.Vars(r)
 	msg := redis_handler.AddMessage(data["msg"])
@@ -55,6 +57,7 @@ func Reload(w http.ResponseWriter, r *http.Request) {
 
 }
 
+//Api to view cache data supports pagination
 func ReadCachePagination(w http.ResponseWriter, r *http.Request) {
 	var cache_data readResponse
 	skip := mux.Vars(r)
